@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>i'm alive</title>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* Общие стили */
+:root{
+  --accent:#7c5cff;
+  --glass-bg: rgba(255,255,255,0.04);
+  --glass-border: rgba(255,255,255,0.06);
+  --text: #000;
+  --typewriter-color: #000;
+  --lyrics-color: #000;
+}
+html,body{
+  height:100%;
+  margin:0;
+  background:#000;
+  color:var(--text);
+  font-family: 'Fixedsys Excelsior 3.01', 'Courier New', monospace;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  /* overflow:hidden; */ /* Удалить или закомментировать эту строку */
+}
+
+/* Центрирование контейнера */
+.app {
+  position:relative;
+  min-height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:40px;
+  box-sizing:border-box;
+  z-index:2;
+}
+
+/* Полупрозрачный прямоугольник */
+.box {
+  width:min(800px, 98vw); /* увеличено */
+  min-height: 340px;       /* увеличено */
+  height:auto;
+  background: linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.008)); /* стало ещё прозрачнее */
+  border:1px solid var(--glass-border);
+  backdrop-filter: blur(8px) saturate(1.05);
+  -webkit-backdrop-filter: blur(8px) saturate(1.05);
+  border-radius:24px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.7), 0 1px 0 rgba(124,92,255,0.04) inset;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:40px;
+  box-sizing:border-box;
+}
+
+/* Удаляем аватарку и ник */
+.box-left {
+  display: none;
+}
+.box-circle, .box-nickname {
+  display: none;
+}
+
+/* Стили для иконок ссылок */
+.link-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.link-icon img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  margin-bottom: 4px;
+  transition: filter 0.2s, transform 0.2s;
+  cursor: pointer;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.18));
+}
+.link-icon img:hover {
+  filter: brightness(1.2) drop-shadow(0 0 16px rgba(124,92,255,0.28));
+  transform: scale(1.08);
+}
+.links {
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  justify-content:center;   /* центрируем по ширине */
+  gap:38px;                 /* больше места между элементами */
+  flex-wrap:nowrap;         /* запрещаем перенос, оставляем на одной линии */
+  overflow-x:hidden;          /* если не помещается — можно прокрутить */
+  width:100%;
+  margin-top:30px;
+}
+.links a, .links button {
+  color:var(--text);
+  text-decoration:none;
+  font-weight:600;
+  font-size:13px;
+  background:transparent;
+  border:0;
+  padding:6px 8px;
+  cursor:pointer;
+  color:#000;
+  text-shadow:0 0 8px rgba(0,0,0,0.08), 0 0 16px rgba(0,0,0,0.04);
+  transition:text-shadow 0.3s;
+}
+.links a:hover, .links button:hover {
+  text-shadow:0 0 12px rgba(0,0,0,0.12), 0 0 24px rgba(0,0,0,0.08);
+}
+
+/* надпись внизу о проигрывании или навигации */
+.hint {
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:12px;
+  color:rgba(0, 0, 0, 0.4);
+  user-select:none;
+  pointer-events:none;
+  transition:opacity 0.3s;
+  z-index:1;
+}
+.hint.hidden {
+  opacity:0;
+  display:none;
+}
+
+@media (max-width:768px){
+  .box { flex-direction:column; gap:20px; padding:24px; }
+  .box-left { flex-direction:row; gap:12px; }
+  .box-circle { width:70px; height:70px; border-radius:12px; }
+  .box-divider { display:none; }
+}
+
+/* мобильная версия для очень маленьких экранов */
+ @media (max-width:480px){
+   .box {
+     width:min(100%, 100vw);
+     min-height:200px;
+     padding:24px 20px;
+     margin-top:30px;
+   }
+   .box-left { gap:12px; }
+   .box-circle { width:60px; height:60px; border-radius:10px; }
+   .box-nickname { font-size:16px; }
+   .links {
+     gap:12px 8px;
+     margin-top:24px;
+     font-size:12px;
+     flex-wrap:wrap;
+     max-width:150px;
+     justify-content:center;
+   }
+   .links a, .links button { 
+     padding:4px 6px;
+     font-size:11px;
+     text-shadow:0 0 6px rgba(0, 0, 0, 0.2), 0 0 12px rgba(255, 255, 255, 0.08);
+     flex:0 0 calc(50% - 6px);
+     text-align:center;
+     margin:0;
+   }
+   .links .sep { 
+     display:none;
+   }
+   .hint { font-size:10px; bottom:16px; }
+   .nav-hint { font-size:10px; bottom:-24px; }
+   .lyrics-randomized, #lyricsRandomized {
+     font-size:12px !important;
+     padding:0 2vw;
+     max-width:98vw;
+     word-break:break-word;
+   }
+ }
+
+ /* надпись под прямоугольником */
+ .nav-hint {
+   position:absolute;
+   bottom:-35px;
+   left:50%;
+   transform:translateX(-50%);
+   font-size:12px;
+   color:rgba(0, 0, 0, 0.4);
+   user-select:none;
+   pointer-events:none;
+   white-space:nowrap;
+ }
+</style>
+</head>
+<body>
+<!-- Фоновое видео -->
+<video id="bgVideo" autoplay loop muted playsinline preload="auto"
+  style="position:fixed;top:0;left:0;width:100vw;height:100vh;object-fit:cover;z-index:0;pointer-events:none;">
+  <source src="background/forest.mp4" type="video/mp4">
+</video>
+
+<!-- Текст поверх видео -->
+<div class="lyrics-randomized" id="lyricsRandomized"
+  style="position:absolute;left:0;right:0;bottom:32px;margin:0 auto;width:98vw;max-width:900px;font-family:'Courier Prime', 'Courier New', monospace;font-size:17px;color: var(--lyrics-color, #fff); /* теперь цвет можно менять через переменную */
+letter-spacing:1.2px;text-align:center;pointer-events:none;user-select:none;z-index:1;white-space:pre-line;font-weight:500;text-shadow:0 2px 12px #fff, 0 0 2px #ffffff33;display:flex;justify-content:center;align-items:center;">
+</div>
+
+<!-- скрытый аудио плеер для музыки -->
+<audio id="bgMusic" style="display:none;" autoplay muted loop preload="auto">
+  <source src="music/track.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Кнопка "назад" в левом верхнем углу -->
+<a href="index.html" style="
+  position:fixed;
+  top:18px;
+  left:18px;
+  width:32px;
+  height:32px;
+  background:rgba(255,255,255,0.13);
+  border:1.5px solid #bbb;
+  border-radius:7px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Courier Prime','Courier New',monospace;
+  font-size:1.35rem;
+  color:#222;
+  text-decoration:none;
+  z-index:100;
+  box-shadow:0 2px 8px #0002;
+  transition:background 0.18s,border 0.18s;
+"
+  onmouseover="this.style.background='rgba(255,255,255,0.22)';this.style.borderColor='#bbb';"
+  onmouseout="this.style.background='rgba(255,255,255,0.13)';this.style.borderColor='#bbb';"
+  title="Назад"
+>&lt;</a>
+
+<div class="app">
+   <div class="box" style="z-index:1; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+     <img src="images/avatar.png" alt="avatar" style="width:120px;height:120px;object-fit:cover;border-radius:50%;box-shadow:0 2px 12px rgba(255,255,255,0.13);margin-bottom:22px;">
+     <div id="melancholia-typewriter" style="font-family:'Courier Prime','Courier New',monospace;font-size:1.2rem;font-weight:700;color:#505050;letter-spacing:1.2px;white-space:pre;min-width:1em;text-align:center;"></div>
+     <!-- ник под аватаркой -->
+     <div style="font-family:'Courier Prime','Courier New',monospace;font-size:1.15rem;font-weight:700;color:#222;letter-spacing:1.2px;text-align:center;margin-bottom:0;">
+       melancholia
+     </div>
+     <!-- символ по центру между melancholia и role -->
+     <div style="display:flex;justify-content:center;align-items:center;margin:32px 0;">
+       <span style="font-size:2.1rem;color:#444;">⛤</span>
+     </div>
+     <!-- текст под линией -->
+     <div style="width:100%;text-align:center;font-family:'Courier Prime','Courier New',monospace;font-size:1.05rem;color:#444;user-select:none;">
+       role: no&nbsp;|&nbsp;age: 0-100&nbsp;|&nbsp;love: music
+     </div>
+     <!-- разделительная линия (перемещена ниже) -->
+     <div style="width:100%;text-align:center;margin:18px 0 8px 0;font-family:'Courier Prime','Courier New',monospace;font-size:1.1rem;color:#222;user-select:none;">
+       -------------------------------------------------
+     </div>
+     <!-- новый текст под role -->
+     <div style="width:100%;text-align:center;font-family:'Courier Prime','Courier New',monospace;font-size:1rem;color:#222;user-select:none;white-space:pre-line;margin-top:18px;">
+I have more
+To live for
+There's a note in a bottle
+Washed ashore
+
+I hear waves
+Sing my name
+Saying no matter how hard
+There's a way
+
+Though I cry
+All the time
+And struggle out of bed
+I'm alive
+
+And I'll live
+For myself
+For the ones that I love
+For the ones that I lost
+
+Dragging my foot forward
+Laced with scars and wounds that still hurt
+It's so unfair that I'm still here
+
+But I know you'd tell me if you were here
+To get up and start moving, what do you fear
+Everything is as you left it
+Brush off the dust, make a wish
+
+Though I cry
+All the time
+And struggle out of bed
+I'm alive
+
+I'm alive
+I'm alive
+I'm alive
+
+And I'll live (as you left it— you left it)
+For myself (everything is as you left it— you left it)
+For the ones that I love (everything is as you left it— you left it)
+For the ones that I lost (brush off the dust, make a wish)
+     </div>
+     <div class="nav-hint" id="hint" style="position:absolute;left:50%;transform:translateX(-50%);bottom:-35px;">click to play audio</div>
+   </div>
+ </div>
+
+<!-- Разделительная линия и надпись -->
+<div style="width:100%;text-align:center;margin-top:38px;margin-bottom:8px;font-family:'Courier Prime','Courier New',monospace;font-size:1.1rem;color:#222;user-select:none;">
+  -----------------------
+</div>
+<div style="width:100%;text-align:center;font-family:'Courier Prime','Courier New',monospace;font-size:1.05rem;color:#444;user-select:none;">
+  role: no&nbsp;|&nbsp;age: 0-100&nbsp;|&nbsp;love: music
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // const box = document.querySelector('.box'); // больше не нужен
+  const audio = document.getElementById('bgMusic');
+  const hint = document.getElementById('hint');
+  let isPlaying = false;
+
+  function updateHint() {
+    hint.textContent = isPlaying ? 'click to stop audio' : 'click to play audio';
+  }
+
+  audio.muted = false;
+  audio.pause();
+  isPlaying = false;
+  updateHint();
+
+  // Клик по всему body, кроме кнопки "назад"
+  document.body.addEventListener('click', function(e) {
+    // Не реагировать на выделение текста
+    if (window.getSelection && window.getSelection().toString()) return;
+    // Не реагировать на клик по ссылке "назад"
+    if (e.target.closest('a[href="index.html"]')) return;
+    if (audio.paused) {
+      audio.muted = false;
+      audio.play().then(() => {
+        isPlaying = true;
+        updateHint();
+      }).catch(() => {
+        isPlaying = false;
+        updateHint();
+      });
+    } else {
+      audio.pause();
+      isPlaying = false;
+      updateHint();
+    }
+  });
+
+  audio.addEventListener('play', function() {
+    isPlaying = true;
+    updateHint();
+  });
+  audio.addEventListener('pause', function() {
+    isPlaying = false;
+    updateHint();
+  });
+});
+</script>
+</body>
+</html>
