@@ -154,18 +154,23 @@ html,body{
      padding: 0;
      min-height: 100vh;
      height: auto;
-     align-items: flex-start;
-     justify-content: flex-start;
+     align-items: center !important;
+     justify-content: center !important;
+     display: flex !important;
    }
    .box {
-     width: 100vw !important;
+     width: min(100vw, 98vw) !important;
      min-width: 0 !important;
      max-width: 100vw !important;
      min-height: 220px !important;
      padding: 18px 2vw !important;
-     margin: 0;
-     border-radius: 0 0 18px 18px;
+     margin: 0 auto !important;
+     border-radius: 24px !important;
      box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+     display: flex !important;
+     flex-direction: column !important;
+     align-items: center !important;
+     justify-content: center !important;
    }
    .lyrics-zone {
      margin-bottom: 10px;
@@ -219,7 +224,7 @@ html,body{
      word-break: break-word !important;
    }
    #bgVideo {
-     display: none !important;
+     display: block !important;
    }
  }
 
