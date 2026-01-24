@@ -23,7 +23,7 @@ html,body{
   font-family: 'Fixedsys Excelsior 3.01', 'Courier New', monospace;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
-  /* overflow:hidden; */ /* Удалить или закомментировать эту строку */
+  overflow:hidden;
 }
 
 /* Центрирование контейнера */
@@ -210,156 +210,308 @@ letter-spacing:1.2px;text-align:center;pointer-events:none;user-select:none;z-in
   <source src="music/track.mp3" type="audio/mpeg">
 </audio>
 
-<!-- Кнопка "назад" в левом верхнем углу -->
-<a href="index.html" style="
-  position:fixed;
-  top:18px;
-  left:18px;
-  width:32px;
-  height:32px;
-  background:rgba(255,255,255,0.13);
-  border:1.5px solid #bbb;
-  border-radius:7px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-family:'Courier Prime','Courier New',monospace;
-  font-size:1.35rem;
-  color:#222;
-  text-decoration:none;
-  z-index:100;
-  box-shadow:0 2px 8px #0002;
-  transition:background 0.18s,border 0.18s;
-"
-  onmouseover="this.style.background='rgba(255,255,255,0.22)';this.style.borderColor='#bbb';"
-  onmouseout="this.style.background='rgba(255,255,255,0.13)';this.style.borderColor='#bbb';"
-  title="Назад"
->&lt;</a>
-
 <div class="app">
-   <div class="box" style="z-index:1; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-     <img src="images/avatar.png" alt="avatar" style="width:120px;height:120px;object-fit:cover;border-radius:50%;box-shadow:0 2px 12px rgba(255,255,255,0.13);margin-bottom:22px;">
-     <div id="melancholia-typewriter" style="font-family:'Courier Prime','Courier New',monospace;font-size:1.2rem;font-weight:700;color:#505050;letter-spacing:1.2px;white-space:pre;min-width:1em;text-align:center;"></div>
-     <!-- ник под аватаркой -->
-     <div style="font-family:'Courier Prime','Courier New',monospace;font-size:1.15rem;font-weight:700;color:#222;letter-spacing:1.2px;text-align:center;margin-bottom:0;">
-       melancholia
+   <div class="box" style="z-index:1;">
+     <!-- отдельная зона для текста -->
+     <div class="lyrics-zone">
+       <div class="typewriter" id="typewriter"></div>
      </div>
-     <!-- символ по центру между melancholia и role -->
-     <div style="display:flex;justify-content:center;align-items:center;margin:32px 0;">
-       <span style="font-size:2.1rem;color:#444;">⛤</span>
+     <!-- разделитель (скрыт) -->
+     <div class="box-divider"></div>
+     
+     <!-- ссылки с иконками -->
+     <div class="box-right">
+       <div class="links" id="linksRow">
+         <div class="link-icon">
+           <a href="https://www.pinterest.com/imsickwithyou/" target="_blank" rel="noopener">
+             <img src="images/Pinterest.png" alt="Pinterest">
+           </a>
+           <a class="link" href="https://www.pinterest.com/imsickwithyou/" target="_blank" rel="noopener">pinterest</a>
+         </div>
+         <div class="link-icon">
+           <a href="https://www.tiktok.com/@seenthis444ngel" target="_blank" rel="noopener">
+             <img src="images/TikTok.png" alt="TikTok">
+           </a>
+           <a class="link" href="https://www.tiktok.com/@seenthis444ngel" target="_blank" rel="noopener">tiktok</a>
+         </div>
+         <div class="link-icon">
+           <a href="https://twitter.com/" target="_blank" rel="noopener">
+             <img src="images/Twitter.png" alt="Twitter">
+           </a>
+           <a class="link" href="https://twitter.com/" target="_blank" rel="noopener">twitter</a>
+         </div>
+         <div class="link-icon">
+           <a href="https://open.spotify.com/user/" target="_blank" rel="noopener">
+             <img src="images/Spotify.png" alt="Spotify">
+           </a>
+           <a class="link" href="https://open.spotify.com/user/" target="_blank" rel="noopener">spotify</a>
+         </div>
+         <div class="link-icon">
+           <a href="https://soundcloud.com/targetxd" target="_blank" rel="noopener">
+             <img src="images/SoundCloud.png" alt="SoundCloud">
+           </a>
+           <a class="link" href="https://soundcloud.com/targetxd" target="_blank" rel="noopener">soundcloud</a>
+         </div>
+       </div>
+       <!-- надпись под прямоугольником -->
+       <div style="display: flex; justify-content: center; align-items: center; margin-top: 18px;">
+         <span style="color:#000000;font-family:'Courier Prime','Courier New',monospace;font-size:15px;user-select:none;margin-right:10px;">---------------------</span>
+         <a href="about.html" class="about-btn" style="
+           display:inline-block;
+           padding:8px 22px;
+           font-size:14px;
+           font-family:'Courier Prime','Courier New',monospace;
+           font-weight:600;
+           color:#000;
+           background:rgba(255,255,255,0.23); /* менее прозрачный фон */
+           border:none;
+           border-radius:8px;
+           box-shadow:none;
+           text-decoration:none;
+           letter-spacing:1px;
+           transition:background 0.2s,box-shadow 0.2s,transform 0.1s;
+           cursor:pointer;
+           backdrop-filter: blur(2px);
+         " 
+         onmouseover="this.style.background='rgba(255,255,255,0.32)';this.style.transform='scale(1.04)';"
+         onmouseout="this.style.background='rgba(255,255,255,0.23)';this.style.transform='none';"
+         >about.me</a>
+         <span style="color:#000000;font-family:'Courier Prime','Courier New',monospace;font-size:15px;user-select:none;margin-left:10px;">---------------------</span>
+       </div>
+       <div class="nav-hint" id="hint">click to play audio</div>
      </div>
-     <!-- текст под линией -->
-     <div style="width:100%;text-align:center;font-family:'Courier Prime','Courier New',monospace;font-size:1.05rem;color:#444;user-select:none;">
-       role: no&nbsp;|&nbsp;age: 0-100&nbsp;|&nbsp;love: music
-     </div>
-     <!-- разделительная линия (перемещена ниже) -->
-     <div style="width:100%;text-align:center;margin:18px 0 8px 0;font-family:'Courier Prime','Courier New',monospace;font-size:1.1rem;color:#222;user-select:none;">
-       -------------------------------------------------
-     </div>
-     <!-- новый текст под role -->
-     <div style="width:100%;text-align:center;font-family:'Courier Prime','Courier New',monospace;font-size:1rem;color:#222;user-select:none;white-space:pre-line;margin-top:18px;">
-I have more
-To live for
-There's a note in a bottle
-Washed ashore
-
-I hear waves
-Sing my name
-Saying no matter how hard
-There's a way
-
-Though I cry
-All the time
-And struggle out of bed
-I'm alive
-
-And I'll live
-For myself
-For the ones that I love
-For the ones that I lost
-
-Dragging my foot forward
-Laced with scars and wounds that still hurt
-It's so unfair that I'm still here
-
-But I know you'd tell me if you were here
-To get up and start moving, what do you fear
-Everything is as you left it
-Brush off the dust, make a wish
-
-Though I cry
-All the time
-And struggle out of bed
-I'm alive
-
-I'm alive
-I'm alive
-I'm alive
-
-And I'll live (as you left it— you left it)
-For myself (everything is as you left it— you left it)
-For the ones that I love (everything is as you left it— you left it)
-For the ones that I lost (brush off the dust, make a wish)
-     </div>
-     <div class="nav-hint" id="hint" style="position:absolute;left:50%;transform:translateX(-50%);bottom:-35px;">click to play audio</div>
    </div>
  </div>
 
-<!-- Разделительная линия и надпись -->
-<div style="width:100%;text-align:center;margin-top:38px;margin-bottom:8px;font-family:'Courier Prime','Courier New',monospace;font-size:1.1rem;color:#222;user-select:none;">
-  -----------------------
-</div>
-<div style="width:100%;text-align:center;font-family:'Courier Prime','Courier New',monospace;font-size:1.05rem;color:#444;user-select:none;">
-  role: no&nbsp;|&nbsp;age: 0-100&nbsp;|&nbsp;love: music
-</div>
+<!-- Удалён дублирующийся блок .lyrics-randomized -->
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  // const box = document.querySelector('.box'); // больше не нужен
-  const audio = document.getElementById('bgMusic');
-  const hint = document.getElementById('hint');
-  let isPlaying = false;
+ <script>
+const hint = document.getElementById('hint');
 
-  function updateHint() {
-    hint.textContent = isPlaying ? 'click to stop audio' : 'click to play audio';
+/* автозапуск музыки с autoplay, включение звука при готовности */
+window.addEventListener('DOMContentLoaded', () => {
+  const bgMusic = document.getElementById('bgMusic');
+  if(bgMusic){
+    bgMusic.volume = 0.5;
+    bgMusic.muted = true;
+    bgMusic.play().catch(()=>{});
+    bgMusic.addEventListener('error', (e) => {
+      console.error('❌ Ошибка загрузки аудио:', bgMusic.error?.message);
+    });
+    bgMusic.addEventListener('canplay', () => {
+      console.log('✓ Аудио готово к проигрыванию');
+    });
+
+    let musicPlaying = false;
+
+    document.addEventListener('click', () => {
+      if (!musicPlaying) {
+        try{
+          const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+          if(audioContext.state === 'suspended'){
+            audioContext.resume().then(() => {
+              console.log('✓ AudioContext активирован');
+            });
+          }
+        }catch(e){ /* игнорируем */ }
+        bgMusic.muted = false;
+        hint.textContent = 'click to stop audio';
+        bgMusic.play().catch(()=>{});
+        musicPlaying = true;
+      } else {
+        bgMusic.pause();
+        hint.textContent = 'click to play audio';
+        musicPlaying = false;
+      }
+    });
+  }
+});
+
+/* Typewriter: выводит текст трека, затем убирает, затем "i'm alive" */
+window.addEventListener('DOMContentLoaded', () => {
+  const el = document.getElementById('typewriter');
+  if(!el) return;
+  const lyrics = [
+    "I have more",
+    "To live for",
+    "There's a note in a bottle",
+    "Washed ashore",
+    "I hear waves",
+    "Sing my name",
+    "Saying no matter how hard",
+    "There's a way",
+    "Though I cry",
+    "All the time",
+    "And struggle out of bed",
+    "I'm alive",
+    "And I'll live",
+    "For myself",
+    "For the ones that I love",
+    "For the ones that I lost",
+    "Dragging my foot forward",
+    "Laced with scars and wounds that still hurt",
+    "It's so unfair that I'm still here",
+    "But I know you'd tell me if you were here",
+    "To get up and start moving, what do you fear",
+    "Everything is as you left it",
+    "Brush off the dust, make a wish",
+    "Though I cry",
+    "All the time",
+    "And struggle out of bed",
+    "I'm alive",
+    "I'm alive",
+    "I'm alive",
+    "I'm alive",
+    "And I'll live (as you left it— you left it)",
+    "For myself (everything is as you left it— you left it)",
+    "For the ones that I love (everything is as you left it— you left it)",
+    "For the ones that I lost (brush off the dust, make a wish)"
+  ];
+  const defaultShowSpeed = 90;
+  const slowShowSpeed = 160; // ещё медленнее для коротких строк
+  const hideSpeed = 22;
+  const pause = 600;
+
+  function typeLine(line, cb) {
+    let i = 0;
+    el.textContent = '';
+    const showSpeed = line.length < 18 ? slowShowSpeed : defaultShowSpeed;
+    function type() {
+      if (i < line.length) {
+        el.textContent += line[i++];
+        setTimeout(type, showSpeed);
+      } else {
+        setTimeout(() => cb(), pause);
+      }
+    }
+    type();
   }
 
-  audio.muted = false;
-  audio.pause();
-  isPlaying = false;
-  updateHint();
-
-  // Клик по всему body, кроме кнопки "назад"
-  document.body.addEventListener('click', function(e) {
-    // Не реагировать на выделение текста
-    if (window.getSelection && window.getSelection().toString()) return;
-    // Не реагировать на клик по ссылке "назад"
-    if (e.target.closest('a[href="index.html"]')) return;
-    if (audio.paused) {
-      audio.muted = false;
-      audio.play().then(() => {
-        isPlaying = true;
-        updateHint();
-      }).catch(() => {
-        isPlaying = false;
-        updateHint();
-      });
-    } else {
-      audio.pause();
-      isPlaying = false;
-      updateHint();
+  function eraseLine(cb) {
+    let str = el.textContent;
+    function erase() {
+      if (str.length > 0) {
+        str = str.slice(0, -1);
+        el.textContent = str.length === 0 ? '\u200B' : str; // невидимый символ если пусто
+        setTimeout(erase, hideSpeed);
+      } else {
+        cb();
+      }
     }
-  });
+    erase();
+  }
 
-  audio.addEventListener('play', function() {
-    isPlaying = true;
-    updateHint();
-  });
-  audio.addEventListener('pause', function() {
-    isPlaying = false;
-    updateHint();
-  });
+  function runLyrics(idx = 0) {
+    if (idx >= lyrics.length) {
+      // После трека — обычная надпись "i'm alive"
+      typeLine("i'm alive", ()=>{});
+      return;
+    }
+    typeLine(lyrics[idx], () => {
+      eraseLine(() => runLyrics(idx + 1));
+    });
+  }
+
+  setTimeout(() => runLyrics(0), 600);
 });
+
+/* "Кривой" рандомный текст в стиле Minecraft, по центру, фиксированной длины, цвет белый */
+window.addEventListener('DOMContentLoaded', () => {
+  const lyrics = [
+    "I have more",
+    "To live for",
+    "There's a note in a bottle",
+    "Washed ashore",
+    "I hear waves",
+    "Sing my name",
+    "Saying no matter how hard",
+    "There's a way",
+    "Though I cry",
+    "All the time",
+    "And struggle out of bed",
+    "I'm alive",
+    "And I'll live",
+    "For myself",
+    "For the ones that I love",
+    "For the ones that I lost",
+    "Dragging my foot forward",
+    "Laced with scars and wounds that still hurt",
+    "It's so unfair that I'm still here",
+    "But I know you'd tell me if you were here",
+    "To get up and start moving, what do you fear",
+    "Everything is as you left it",
+    "Brush off the dust, make a wish",
+    "Though I cry",
+    "All the time",
+    "And struggle out of bed",
+    "I'm alive",
+    "I'm alive",
+    "I'm alive",
+    "I'm alive",
+    "And I'll live (as you left it— you left it)",
+    "For myself (everything is as you left it— you left it)",
+    "For the ones that I love (everything is as you left it— you left it)",
+    "For the ones that I lost (brush off the dust, make a wish)"
+  ];
+  const randomZone = document.getElementById('lyricsRandomized');
+  if(!randomZone) return;
+
+  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=,.<>/?|[]{}~';
+  let idx = 0;
+  let currentLine = lyrics[0];
+  let animInterval = null;
+  let lineInterval = null;
+
+  // вычисляем максимальную длину строки
+  const maxLen = Math.max(...lyrics.map(l => l.length));
+
+  function getObfuscated(str) {
+    // дополняем строку пробелами справа до maxLen
+    let padded = str.padEnd(maxLen, ' ');
+    return padded.split('').map((ch, i) => {
+      // не меняем пробелы и знаки препинания
+      if (' (),.—\''.includes(ch)) return ch;
+      // если это добавленный пробел — оставляем пробел
+      if (i >= str.length) return ' ';
+      // с вероятностью 0.7 заменяем на рандомный символ
+      if (Math.random() < 0.7) return chars[Math.floor(Math.random() * chars.length)];
+      return ch;
+    }).join('');
+  }
+
+  function startObfuscation(line) {
+    if (animInterval) clearInterval(animInterval);
+    animInterval = setInterval(() => {
+      randomZone.textContent = getObfuscated(line);
+    }, 60);
+  }
+
+  function nextLine() {
+    currentLine = lyrics[idx];
+    idx = (idx + 1) % lyrics.length;
+    startObfuscation(currentLine);
+  }
+
+  nextLine();
+  if (lineInterval) clearInterval(lineInterval);
+  lineInterval = setInterval(nextLine, 2000);
+});
+
+// "Minecraft"-style animated title
+(function animateTitle() {
+  const base = "XDXDXD";
+  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=,.<>/?|[]{}~';
+  let visible = true;
+  setInterval(() => {
+    let out = '';
+    for (let i = 0; i < base.length; ++i) {
+      // 70% шанс заменить символ на рандомный
+      out += Math.random() < 0.7 ? chars[Math.floor(Math.random() * chars.length)] : base[i];
+    }
+    document.title = out;
+  }, 90);
+})();
+
 </script>
 </body>
 </html>
