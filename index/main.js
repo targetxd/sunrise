@@ -77,28 +77,39 @@ window.addEventListener('DOMContentLoaded', () => {
   const slowShowSpeed = 160;
   const hideSpeed = 22;
   const pause = 600;
+  let cursorInterval = null;
+  let showCursor = true;
+
+  function setTypewriterText(text) {
+    el.textContent = text + '|';
+  }
+
   function typeLine(line, cb) {
     let i = 0;
     el.textContent = '';
     const showSpeed = line.length < 18 ? slowShowSpeed : defaultShowSpeed;
     function type() {
       if (i < line.length) {
-        el.textContent += line[i++];
+        setTypewriterText(line.slice(0, i));
+        i++;
         setTimeout(type, showSpeed);
       } else {
-        setTimeout(() => cb(), pause);
+        setTypewriterText(line);
+        setTimeout(cb, pause);
       }
     }
     type();
   }
+
   function eraseLine(cb) {
-    let str = el.textContent;
+    let str = el.textContent.replace('|', '').replace('\u200B', '');
     function erase() {
       if (str.length > 0) {
         str = str.slice(0, -1);
-        el.textContent = str.length === 0 ? '\u200B' : str;
+        setTypewriterText(str.length === 0 ? '\u200B' : str);
         setTimeout(erase, hideSpeed);
       } else {
+        el.textContent = '\u200B';
         cb();
       }
     }
