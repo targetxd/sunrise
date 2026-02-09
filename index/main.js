@@ -6,10 +6,10 @@ window.addEventListener('DOMContentLoaded', () => {
     bgMusic.muted = true;
     bgMusic.play().catch(()=>{});
     bgMusic.addEventListener('error', (e) => {
-      console.error('❌ Ошибка загрузки аудио:', bgMusic.error?.message);
+      console.error('трек не загружен', bgMusic.error?.message);
     });
     bgMusic.addEventListener('canplay', () => {
-      console.log('✓ Аудио готово к проигрыванию');
+      console.log('трек готов');
     });
     let musicPlaying = false;
     document.addEventListener('click', () => {
@@ -18,7 +18,7 @@ window.addEventListener('DOMContentLoaded', () => {
           const audioContext = new (window.AudioContext || window.webkitAudioContext)();
           if(audioContext.state === 'suspended'){
             audioContext.resume().then(() => {
-              console.log('✓ AudioContext активирован');
+              console.log('audioContext активирован');
             });
           }
         }catch(e){}
@@ -207,3 +207,4 @@ window.addEventListener('DOMContentLoaded', () => {
     document.title = out;
   }, 90);
 })();
+
